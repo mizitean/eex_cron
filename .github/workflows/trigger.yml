@@ -1,0 +1,31 @@
+name: trigger
+
+# Toto repo je VEREJNE a neobsahuje ziadne data ani kod -- len cron.
+#
+# Preco existuje: ZMERANE 16. 9. 2026, ze na privatnom repe mizitean/eex_data
+# sa scheduled workflow NESPUSTI. Cron bol nastaveny na */15, sloty :30 aj :45
+# presli, nula behov -- pritom workflow_dispatch na tom istom workflowe presiel
+# patkrat za sebou. Vo verejnom repe cron bezi spolahlivo a bez limitu minut.
+#
+# Minuty za samotne stahovanie sa micha ju PRIVATNEMU repu. Tu odide par sekund.
+#
+# Secret EEX_TOKEN je fine-grained PAT s pravom Actions: write VYLUCNE na
+# mizitean/eex_data. Ked by unikol, najhorsie co s nim niekto spravi je,
+# ze spusti stahovanie.
+
+on:
+  schedule:
+    # nenulova minuta -- :00 je najviac pretazena a behy sa vtedy odkladaju
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  spusti:
+    runs-on: ubuntu-latest
+    steps:
+      - name: spusti daily v privatnom repe
+        env:
+          GH_TOKEN: ${{ secrets.EEX_TOKEN }}
+        run: |
+          gh workflow run daily.yml --repo mizitean/eex_data
+          echo "spustene: https://github.com/mizitean/eex_data/actions"
