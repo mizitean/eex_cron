@@ -15,9 +15,11 @@ name: trigger
 
 on:
   schedule:
-    # DOCASNE kazdych 5 minut -- overujeme, ci sa scheduled beh vo VEREJNOM
-    # repe naozaj spusti. Po overeni vratit na '17 5 * * *'.
-    - cron: '*/5 * * * *'
+    # POZOR: tento cron NEFUNGUJE a je tu len ako zaloha. Zmerane 16. 9. 2026:
+    # nastaveny na */5, dvadsat minut, nula scheduled behov. To iste na
+    # privatnom eex_data s */15. workflow_dispatch pritom prejde vzdy.
+    # Skutocnym spustacom je cron-job.org, job 8459181, denne 5:17 UTC.
+    - cron: '17 5 * * *'
   workflow_dispatch:
 
 jobs:
@@ -31,5 +33,5 @@ jobs:
           # REST endpoint priamo, s explicitnym ref. `gh workflow run` si chce
           # najprv precitat default branch a na to potrebuje Contents: read --
           # token ma zamerne len Actions: write.
-          gh api -X POST             repos/mizitean/eex_data/actions/workflows/daily.yml/dispatches             -f ref=main             -f inputs[budget_seconds]=60
+          gh api -X POST             repos/mizitean/eex_data/actions/workflows/daily.yml/dispatches             -f ref=main
           echo "spustene: https://github.com/mizitean/eex_data/actions"
