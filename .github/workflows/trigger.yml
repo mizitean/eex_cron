@@ -27,5 +27,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.EEX_TOKEN }}
         run: |
-          gh workflow run daily.yml --repo mizitean/eex_data
+          # REST endpoint priamo, s explicitnym ref. `gh workflow run` si chce
+          # najprv precitat default branch a na to potrebuje Contents: read --
+          # token ma zamerne len Actions: write.
+          gh api -X POST             repos/mizitean/eex_data/actions/workflows/daily.yml/dispatches             -f ref=main
           echo "spustene: https://github.com/mizitean/eex_data/actions"
