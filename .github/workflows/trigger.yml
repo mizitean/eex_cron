@@ -14,12 +14,10 @@ name: trigger
 # ze spusti stahovanie.
 
 on:
-  schedule:
-    # POZOR: tento cron NEFUNGUJE a je tu len ako zaloha. Zmerane 16. 9. 2026:
-    # nastaveny na */5, dvadsat minut, nula scheduled behov. To iste na
-    # privatnom eex_data s */15. workflow_dispatch pritom prejde vzdy.
-    # Skutocnym spustacom je cron-job.org, job 8459181, denne 5:17 UTC.
-    - cron: '17 5 * * *'
+  # ZIADNY schedule. 16. 9. 2026 sa zdalo, ze cron tu nebezi; od 17. 9. bezal --
+  # ale ~4,5 h neskoro (09:30Z-09:58Z) a spustil DRUHY denny beh v eex_data,
+  # ktory zopakoval 100 % prace prveho (github.sha zmrazene pri vytvoreni
+  # behu vo fronte). Jediny spustac je cron-job.org, job 8459181, 05:17 UTC.
   workflow_dispatch:
 
 jobs:
